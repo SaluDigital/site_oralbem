@@ -10,13 +10,10 @@ const ctaBannerMedia = document.querySelector(".cta-banner-media");
 const ctaBannerSection = document.querySelector(".cta-banner-section");
 const finalCtaMedia = document.querySelector(".final-cta-media");
 const finalCtaSection = document.querySelector(".final-cta");
-const heroVideo = document.getElementById("hero-video");
-const heroVideoToggle = document.getElementById("hero-video-toggle");
 const aboutVideo = document.getElementById("about-video");
 const aboutVideoToggle = document.getElementById("about-video-toggle");
 const noticeModal = document.querySelector("[data-notice-modal]");
 let autoplayInterval = null;
-let heroAudioUnlocked = false;
 let aboutAudioUnlocked = false;
 
 function updateHeader() {
@@ -137,12 +134,6 @@ if (carouselPrev && carouselNext && carouselTrack) {
   startCarouselAutoplay();
 }
 
-if (heroVideo) {
-  heroVideo.muted = true;
-  heroVideo.volume = 1;
-  heroVideo.play().catch(() => {});
-}
-
 if (aboutVideo) {
   aboutVideo.muted = true;
   aboutVideo.volume = 1;
@@ -159,42 +150,11 @@ function updateVideoSoundControl(video, toggle, enableSound) {
   toggle.setAttribute("aria-label", enableSound ? "Desativar som" : "Ativar som");
 }
 
-function unlockHeroVideoAudio() {
-  if (!heroVideo || heroAudioUnlocked) return;
-
-  updateVideoSoundControl(heroVideo, heroVideoToggle, true);
-  heroAudioUnlocked = true;
-  updateVideoSoundControl(aboutVideo, aboutVideoToggle, false);
-  aboutAudioUnlocked = false;
-
-  window.removeEventListener("pointerdown", unlockHeroVideoAudio);
-  window.removeEventListener("touchstart", unlockHeroVideoAudio);
-  window.removeEventListener("keydown", unlockHeroVideoAudio);
-}
-
-if (heroVideo && heroVideoToggle) {
-  heroVideoToggle.addEventListener("click", () => {
-    const enableSound = heroVideo.muted;
-    updateVideoSoundControl(heroVideo, heroVideoToggle, enableSound);
-    heroAudioUnlocked = enableSound;
-
-    if (enableSound) {
-      updateVideoSoundControl(aboutVideo, aboutVideoToggle, false);
-      aboutAudioUnlocked = false;
-    }
-  });
-}
-
 if (aboutVideo && aboutVideoToggle) {
   aboutVideoToggle.addEventListener("click", () => {
     const enableSound = aboutVideo.muted;
     updateVideoSoundControl(aboutVideo, aboutVideoToggle, enableSound);
     aboutAudioUnlocked = enableSound;
-
-    if (enableSound) {
-      updateVideoSoundControl(heroVideo, heroVideoToggle, false);
-      heroAudioUnlocked = false;
-    }
   });
 }
 
@@ -220,10 +180,6 @@ if (noticeModal) {
     }
   });
 }
-
-window.addEventListener("pointerdown", unlockHeroVideoAudio, { once: true });
-window.addEventListener("touchstart", unlockHeroVideoAudio, { once: true });
-window.addEventListener("keydown", unlockHeroVideoAudio, { once: true });
 
 updateHeader();
 updateProgress();
