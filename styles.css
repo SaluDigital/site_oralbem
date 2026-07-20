@@ -633,7 +633,7 @@ body.modal-open {
 
 .clinic-gallery-item {
   margin: 0;
-  min-height: 14rem;
+  aspect-ratio: 4 / 5;
   border-radius: 1.4rem;
   overflow: hidden;
   border: 1px solid rgba(230, 177, 81, 0.18);
@@ -641,15 +641,9 @@ body.modal-open {
   box-shadow: var(--shadow);
 }
 
-.clinic-gallery-item:nth-child(1),
-.clinic-gallery-item:nth-child(6) {
-  grid-column: span 2;
-}
-
 .clinic-gallery-item img {
   width: 100%;
   height: 100%;
-  min-height: inherit;
   object-fit: cover;
   object-position: center;
   transition: transform 0.35s ease, opacity 0.35s ease;
@@ -1514,12 +1508,6 @@ body.modal-open {
 
   .clinic-gallery-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .clinic-gallery-item,
-  .clinic-gallery-item:nth-child(1),
-  .clinic-gallery-item:nth-child(6) {
-    grid-column: auto;
   }
 
   .hero {
