@@ -151,8 +151,9 @@ button {
 .progress-bar span {
   display: block;
   height: 100%;
-  width: 0;
+  width: 100%;
   background: linear-gradient(90deg, var(--gold-300), var(--gold-200));
+  transform: scaleX(0);
   transform-origin: left center;
 }
 
@@ -637,7 +638,7 @@ body.modal-open {
   border-radius: 1.4rem;
   overflow: hidden;
   border: 1px solid rgba(230, 177, 81, 0.18);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.07);
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
   contain: paint;
 }
@@ -647,23 +648,12 @@ body.modal-open {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.35s ease, opacity 0.35s ease;
+  opacity: 0;
+  transition: opacity 0.18s ease;
 }
 
-.clinic-gallery-item:hover img {
-  transform: scale(1.03);
-  opacity: 0.94;
-}
-
-@media (hover: none) {
-  .clinic-gallery-item img {
-    transition: none;
-  }
-
-  .clinic-gallery-item:hover img {
-    transform: none;
-    opacity: 1;
-  }
+.clinic-gallery-item img.is-loaded {
+  opacity: 1;
 }
 
 .treatments-section {

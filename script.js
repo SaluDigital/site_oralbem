@@ -13,9 +13,11 @@ const finalCtaSection = document.querySelector(".final-cta");
 const aboutVideo = document.getElementById("about-video");
 const aboutVideoToggle = document.getElementById("about-video-toggle");
 const noticeModal = document.querySelector("[data-notice-modal]");
+const clinicImages = Array.from(document.querySelectorAll("[data-clinic-src]"));
 let autoplayInterval = null;
 let aboutAudioUnlocked = false;
 let scrollFrameRequested = false;
+let clinicImageQueueStarted = false;
 
 function updateHeader() {
   if (!header) return;
@@ -27,8 +29,8 @@ function updateProgress() {
 
   const scrollTop = window.scrollY;
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = scrollable > 0 ? (scrollTop / scrollable) * 100 : 0;
-  progressIndicator.style.width = `${Math.min(progress, 100)}%`;
+  const progress = scrollable > 0 ? scrollTop / scrollable : 0;
+  progressIndicator.style.transform = `scaleX(${Math.min(progress, 1)})`;
 }
 
 function closeMenu() {
@@ -75,17 +77,66 @@ if (currentYear) {
   currentYear.textContent = ` ${new Date().getFullYear()}`;
 }
 
+function loadClinicImages() {
+  if (clinicImageQueueStarted) return;
+  clinicImageQueueStarted = true;
+
+  function loadNext(index) {
+    const image = clinicImages[index];
+    if (!image) return;
+
+    const continueQueue = () => {
+      image.classList.add("is-loaded");
+      window.setTimeout(() => loadNext(index + 1), 70);
+    };
+
+    image.addEventListener("load", continueQueue, { once: true });
+    image.addEventListener("error", continueQueue, { once: true });
+    image.src = image.dataset.clinicSrc;
+    image.removeAttribute("data-clinic-src");
+  }
+
+  loadNext(0);
+}
+
+if (clinicImages.length) {
+  const clinicGallery = document.querySelector(".clinic-gallery-grid");
+
+  if ("IntersectionObserver" in window && clinicGallery) {
+    const clinicGalleryObserver = new IntersectionObserver(
+      (entries, observer) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        loadClinicImages();
+      },
+      { rootMargin: "450px 0px" }
+    );
+
+    clinicGalleryObserver.observe(clinicGallery);
+  } else {
+    loadClinicImages();
+  }
+}
+
 function updateParallax() {
+  if (window.innerWidth <= 820) return;
+
   if (ctaBannerMedia && ctaBannerSection) {
     const rect = ctaBannerSection.getBoundingClientRect();
-    const offset = rect.top * -0.18;
-    ctaBannerMedia.style.transform = `translateY(calc(-8% + ${offset}px)) scale(1.2)`;
+    const isNearViewport = rect.bottom >= -120 && rect.top <= window.innerHeight + 120;
+    if (isNearViewport) {
+      const offset = rect.top * -0.18;
+      ctaBannerMedia.style.transform = `translateY(calc(-8% + ${offset}px)) scale(1.2)`;
+    }
   }
 
   if (finalCtaMedia && finalCtaSection) {
     const finalRect = finalCtaSection.getBoundingClientRect();
-    const finalOffset = finalRect.top * -0.16;
-    finalCtaMedia.style.transform = `translateY(calc(-6% + ${finalOffset}px)) scale(1.14)`;
+    const isFinalNearViewport = finalRect.bottom >= -120 && finalRect.top <= window.innerHeight + 120;
+    if (isFinalNearViewport) {
+      const finalOffset = finalRect.top * -0.16;
+      finalCtaMedia.style.transform = `translateY(calc(-6% + ${finalOffset}px)) scale(1.14)`;
+    }
   }
 }
 
