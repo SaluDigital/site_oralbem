@@ -15,6 +15,7 @@ const aboutVideoToggle = document.getElementById("about-video-toggle");
 const noticeModal = document.querySelector("[data-notice-modal]");
 let autoplayInterval = null;
 let aboutAudioUnlocked = false;
+let scrollFrameRequested = false;
 
 function updateHeader() {
   if (!header) return;
@@ -47,11 +48,22 @@ if (menuToggle && siteNav) {
   });
 }
 
-window.addEventListener("scroll", () => {
+function handleScroll() {
+  scrollFrameRequested = false;
   updateHeader();
   updateProgress();
   updateParallax();
-});
+}
+
+window.addEventListener(
+  "scroll",
+  () => {
+    if (scrollFrameRequested) return;
+    scrollFrameRequested = true;
+    window.requestAnimationFrame(handleScroll);
+  },
+  { passive: true }
+);
 
 window.addEventListener("resize", () => {
   if (window.innerWidth > 820) {

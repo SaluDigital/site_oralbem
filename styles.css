@@ -638,7 +638,8 @@ body.modal-open {
   overflow: hidden;
   border: 1px solid rgba(230, 177, 81, 0.18);
   background: rgba(255, 255, 255, 0.04);
-  box-shadow: var(--shadow);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+  contain: paint;
 }
 
 .clinic-gallery-item img {
@@ -652,6 +653,17 @@ body.modal-open {
 .clinic-gallery-item:hover img {
   transform: scale(1.03);
   opacity: 0.94;
+}
+
+@media (hover: none) {
+  .clinic-gallery-item img {
+    transition: none;
+  }
+
+  .clinic-gallery-item:hover img {
+    transform: none;
+    opacity: 1;
+  }
 }
 
 .treatments-section {
