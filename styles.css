@@ -620,6 +620,46 @@ body.modal-open {
   margin-top: 1.35rem;
 }
 
+.clinic-gallery-section {
+  background:
+    linear-gradient(180deg, rgba(0, 8, 41, 0.98), rgba(18, 28, 61, 0.98));
+}
+
+.clinic-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.clinic-gallery-item {
+  margin: 0;
+  min-height: 14rem;
+  border-radius: 1.4rem;
+  overflow: hidden;
+  border: 1px solid rgba(230, 177, 81, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: var(--shadow);
+}
+
+.clinic-gallery-item:nth-child(1),
+.clinic-gallery-item:nth-child(6) {
+  grid-column: span 2;
+}
+
+.clinic-gallery-item img {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.clinic-gallery-item:hover img {
+  transform: scale(1.03);
+  opacity: 0.94;
+}
+
 .treatments-section {
   background:
     radial-gradient(circle at top center, rgba(230, 177, 81, 0.1), transparent 30%),
@@ -1470,6 +1510,16 @@ body.modal-open {
 
   .patient-gallery-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .clinic-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .clinic-gallery-item,
+  .clinic-gallery-item:nth-child(1),
+  .clinic-gallery-item:nth-child(6) {
+    grid-column: auto;
   }
 
   .hero {
